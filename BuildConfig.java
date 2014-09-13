@@ -175,11 +175,19 @@ public class MainActivity extends ActionBarActivity {
      * Need to determine the entered pace, do this by changing all to milis per mile
      *need to use this
      */
-    private int determinePace(double currentSpeed, double target){
+    private void determinePace(double currentSpeed, double target){
     	
     	
+    	if(currentSpeed>target)
+    		volumeUp();
+    	else
+    		volumeDown();
+    }
+    private void volumeUp(){
     	
-    	return -1;
+    }
+    private void volumeDown(){
+    	
     }
     /**
      * Writes data to a txt file, storing in the format of TIMERAN DISTANCE RAN
