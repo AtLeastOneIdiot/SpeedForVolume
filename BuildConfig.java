@@ -25,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
@@ -57,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         //initialize all variables
         timeRan=0;
@@ -184,10 +186,10 @@ public class MainActivity extends ActionBarActivity {
     		volumeDown();
     }
     private void volumeUp(){
-    	
+    	audiomanager.adjustStreamVolume(audiomanager.STREAM_MUSIC, audiomanager.ADJUST_RAISE, audiomanager.FLAG_SHOW_UI);
     }
     private void volumeDown(){
-    	
+    	audiomanager.adjustStreamVolume(audiomanager.STREAM_MUSIC, audiomanager.ADJUST_LOWER, audiomanager.FLAG_SHOW_UI);
     }
     /**
      * Writes data to a txt file, storing in the format of TIMERAN DISTANCE RAN
@@ -225,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
     		seekbar=(SeekBar) findViewById(R.id.volumeBar);
     		audiomanager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
     		seekbar.setMax(audiomanager.getStreamMaxVolume(audiomanager.STREAM_MUSIC));
-    		seekbar.setProgress(audiomanager.getStreamVolume(audiomanager.STREAM_MUSIC));
+    		seekbar.setProgress(audiomanager.getStreamVolume(AudioManager.STREAM_MUSIC));
     		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
     			@Override
     			public void onStopTrackingTouch(SeekBar arg0){
@@ -264,6 +266,7 @@ public class MainActivity extends ActionBarActivity {
     };
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
