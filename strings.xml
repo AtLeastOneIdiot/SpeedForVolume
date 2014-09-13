@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Speed For Volume</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">SpeedUp</string>
     <string name="action_settings">Settings</string>
-    <string name="record_time">Record Time</string>
+    <string name="record_time">Record Time After Run</string>
 	<string name="volume">Volume</string>
-	<string name="pause_music">Pause Music</string>
+	<string name="pause_music">Pause Music When Stopped</string>
 	<string name="start">Start</string>
 	<string name="sec_sel">Sec</string>
 	<string name="min_sel">Min</string>
+	<string name="pause_run">Pause Run</string>
+	<string name="stop_run">Stop Run</string>
 </resources>
