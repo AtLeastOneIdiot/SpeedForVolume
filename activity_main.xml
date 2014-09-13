@@ -27,7 +27,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/min_sel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/minute_picker"
@@ -44,39 +44,12 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
 
-    <CheckBox
-        android:id="@+id/pauseBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/volume"
-        android:layout_marginTop="28dp"
-        android:text="@string/pause_music" />
-
-    <CheckBox
-        android:id="@+id/recordBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/pauseBox"
-        android:text="@string/record_time" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/volumeBar"
-        android:layout_below="@+id/recordBox"
-        android:layout_marginRight="14dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/start" />
-
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/sec_sel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
-        android:layout_alignLeft="@+id/button1"
+        android:layout_above="@+id/min_sel"
+        android:layout_alignLeft="@+id/start"
         android:text="@string/sec_sel"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -89,20 +62,70 @@
         android:layout_toLeftOf="@+id/volume" />
 
     <NumberPicker
-        android:id="@+id/second_picker"
+        android:id="@+id/NumberPicker01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/minute_picker"
-        android:layout_toRightOf="@+id/twoLineListItem1" />
+        android:layout_below="@+id/min_sel"
+        android:layout_toRightOf="@+id/volume" />
 
     <TextView
         android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_toRightOf="@+id/volume"
+        android:layout_alignBaseline="@+id/min_sel"
+        android:layout_alignBottom="@+id/min_sel"
+        android:layout_alignLeft="@+id/NumberPicker01"
+        android:layout_marginLeft="21dp"
         android:text="@string/sec_sel"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <CheckBox
+        android:id="@+id/recordBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/volumeBar"
+        android:layout_below="@+id/pauseBox"
+        android:text="@string/record_time" />
+
+    <CheckBox
+        android:id="@+id/pauseBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/recordBox"
+        android:layout_below="@+id/volume"
+        android:layout_marginTop="22dp"
+        android:text="@string/pause_music" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/pauseBox"
+        android:text="@string/start" />
+
+    <EditText
+        android:id="@+id/first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/second"
+        android:layout_centerHorizontal="true"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/third"
+        android:layout_centerHorizontal="true"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/NumberPicker01"
+        android:layout_below="@+id/start"
+        android:ems="10" />
 
 </RelativeLayout>
