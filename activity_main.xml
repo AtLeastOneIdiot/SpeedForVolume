@@ -6,11 +6,103 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.speedforvolume.MainActivity" >
+    tools:context="SeveralMidgets.project.speedforvolume.MainActivity" >
 
-    <TextView
+    <TwoLineListItem
+        android:id="@+id/twoLineListItem1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_below="@+id/recordBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp" />
+
+    <TextView
+        android:id="@+id/volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/volumeBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:text="@string/volume"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/minute_picker"
+        android:layout_alignRight="@+id/minute_picker"
+        android:layout_marginBottom="14dp"
+        android:layout_marginRight="22dp"
+        android:text="@string/min_sel"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <SeekBar
+        android:id="@+id/volumeBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+    <CheckBox
+        android:id="@+id/pauseBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/volume"
+        android:layout_marginTop="28dp"
+        android:text="@string/pause_music" />
+
+    <CheckBox
+        android:id="@+id/recordBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/pauseBox"
+        android:text="@string/record_time" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/volumeBar"
+        android:layout_below="@+id/recordBox"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/start" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView1"
+        android:layout_alignLeft="@+id/button1"
+        android:text="@string/sec_sel"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <NumberPicker
+        android:id="@+id/minute_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/volume"
+        android:layout_marginBottom="18dp"
+        android:layout_toLeftOf="@+id/volume" />
+
+    <NumberPicker
+        android:id="@+id/second_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/minute_picker"
+        android:layout_toRightOf="@+id/twoLineListItem1" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_toRightOf="@+id/volume"
+        android:text="@string/sec_sel"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
