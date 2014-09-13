@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -37,9 +39,8 @@ import android.widget.Toast;
  */
 public class MainActivity extends ActionBarActivity {
 	private boolean accuracy;
-	private float speed, distance;
+	private float speed, distance, target;//speed is the speed you're currently running at target is the user input
 	private long timeRan, startTime, buffer,current;
-	private double lat, lon,alt;
 	private Location loc;
 	private LocationManager locMan;
 	private MediaPlayer media;
@@ -47,6 +48,7 @@ public class MainActivity extends ActionBarActivity {
 	private TextView tv;
 	private AudioManager audiomanager=null;
 	private SeekBar seekbar=null;
+	private NumberPicker min, sec;
 	/**
 	 * Store time so I can tell 
 	 * 
@@ -67,19 +69,44 @@ public class MainActivity extends ActionBarActivity {
         Button nextMusic=(Button) findViewById(R.id.mainactivity_nextbutton);
         Button pauseRun=(Button)findViewById(R.id.pause_run);
         Button stopRun=(Button) findViewById(R.id.stop_run);
+        min=(NumberPicker)findViewById(R.id.min_sel);
+        sec=(NumberPicker)findViewById(R.id.sec_sel);
+        sec.setMaxValue(60);
         locMan=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        target =min.getValue()*6000+sec.getValue()*1000;
+        LocationListener loclisten= new LocationListener(){
+        	public void onLocationChanged(Location loc){
+        		speed=loc.getSpeed();
+        		determinePace(speed,target);
+        		
+        	}
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+        };
         loc=locMan.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        lat=loc.getLatitude();//gets current latitude
-        lon=loc.getLongitude();//gets current longitude
-        lat=loc.getAltitude();//gets current altitude
         accuracy=loc.hasAccuracy();//internet connection
-        speed=loc.getSpeed();
         media=new MediaPlayer();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         seekBar();
         
         
-        
+       
         startRun.setOnClickListener(new View.OnClickListener(){
         	public void onClick(View view){
         		if(loc.hasAccuracy()){
@@ -145,6 +172,16 @@ public class MainActivity extends ActionBarActivity {
         });
     }
     /**
+     * Need to determine the entered pace, do this by changing all to milis per mile
+     *need to use this
+     */
+    private int determinePace(double currentSpeed, double target){
+    	
+    	
+    	
+    	return -1;
+    }
+    /**
      * Writes data to a txt file, storing in the format of TIMERAN DISTANCE RAN
      * @throws IOException
      */
@@ -202,11 +239,6 @@ public class MainActivity extends ActionBarActivity {
     	catch(Exception e){
     		e.printStackTrace();
     	}
-    	
-    	
-    	
-    	
-    	
     }
     private Runnable updates=new Runnable(){
 		@Override
