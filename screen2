@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-</GridView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <Button
+            android:id="@+id/mainactivity_playpausebutton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignBaseline="@+id/mainactivity_previousbutton"
+            android:layout_alignBottom="@+id/mainactivity_previousbutton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/play_pause"
+            android:enabled="false"
+            android:onClick="playPauseEvent" />
+
+        <Button
+            android:id="@+id/stop_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/pause_run"
+            android:layout_alignBottom="@+id/pause_run"
+            android:layout_toRightOf="@+id/pause_run"
+            android:text="@string/stop_run" />
+
+        <Button
+            android:id="@+id/mainactivity_nextbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBaseline="@+id/mainactivity_playpausebutton"
+            android:layout_alignBottom="@+id/mainactivity_playpausebutton"
+            android:layout_toRightOf="@+id/mainactivity_playpausebutton"
+            android:background="@drawable/next"
+            android:clickable="true"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/mainactivity_previousbutton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:layout_toLeftOf="@+id/mainactivity_playpausebutton"
+            android:background="@drawable/previous"
+            android:clickable="true"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/pause_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainactivity_previousbutton"
+            android:layout_marginTop="58dp"
+            android:layout_toLeftOf="@+id/mainactivity_playpausebutton"
+            android:text="@string/pause_run" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="24dp"
+            android:layout_toLeftOf="@+id/mainactivity_nextbutton"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </RelativeLayout>
+
+</LinearLayout>
