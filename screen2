@@ -60,7 +60,7 @@
             android:text="@string/pause_run" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/TimeElapsed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
