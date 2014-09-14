@@ -105,7 +105,7 @@
         android:layout_below="@+id/pauseBox"
         android:text="@string/start" />
 
-    <EditText
+    <TextView
         android:id="@+id/first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10" />
 
-    <EditText
+    <TextView
         android:id="@+id/second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         android:layout_centerHorizontal="true"
         android:ems="10" />
 
-    <EditText
+    <TextView
         android:id="@+id/third"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
