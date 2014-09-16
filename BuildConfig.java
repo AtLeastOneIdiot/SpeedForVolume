@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,15 +21,16 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -49,25 +51,27 @@ import com.google.android.gms.location.LocationRequest;
 public class MainActivity extends FragmentActivity implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
-	private boolean accuracy;
-	private float speed, distance, target;// speed is the speed you're currently
-											// running at target is the user
-											// input
+	private double speed;// speed is the speed you're currently
+	private static double distance;
+	private double target;
+	// running at target is the user
+	// input
 	private long timeRan, startTime, buffer, current;
+	private Chronometer chron;
 	private Location loc;
 	private LocationManager locMan;
 	private MediaPlayer media;
-	private Handler handler = new Handler();
 	private TextView tv;
 	private AudioManager audiomanager;
 	private SeekBar seekbar;
 	private NumberPicker min, sec;
-	LocationClient mLocationClient;
+	private LocationClient mLocationClient;
 	// Define an object that holds accuracy and frequency parameters
-	LocationRequest mLocationRequest;
-	boolean mUpdatesRequested;
-	Editor mEditor;
-	SharedPreferences mPrefs;
+	private LocationRequest mLocationRequest;
+	private static Location lastLocation;
+	boolean mUpdatesRequested, globbool, pauseon;
+	private Editor mEditor;
+	private SharedPreferences mPrefs;
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	// Milliseconds per second
 	private static final int MILLISECONDS_PER_SECOND = 1000;
@@ -104,9 +108,21 @@ public class MainActivity extends FragmentActivity implements
 		timeRan = 0;
 		startTime = 0;
 		buffer = 0;
+		// Open the shared preferences
+		mPrefs = getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
+		// Get a SharedPreferences editor
+		mEditor = mPrefs.edit();
+		/*
+		 * Create a new location client, using the enclosing class to handle
+		 * callbacks.
+		 */
+		mLocationClient = new LocationClient(this, this, this);
+		// Start with updates turned off
+		mUpdatesRequested = false;
+		mLocationClient.connect();
 		seekbar = (SeekBar) findViewById(R.id.volumeBar);
 		audiomanager = (AudioManager) getSystemService(AUDIO_SERVICE);
-		tv = (TextView) findViewById(R.id.TimeElapsed);
+		chron = (Chronometer) findViewById(R.id.chronometer1);
 		Button startRun = (Button) findViewById(R.id.start);
 		Button pauseMusic = (Button) findViewById(R.id.mainactivity_playpausebutton);
 		Button previousMusic = (Button) findViewById(R.id.mainactivity_previousbutton);
@@ -121,37 +137,44 @@ public class MainActivity extends FragmentActivity implements
 		media = new MediaPlayer();
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		seekBar();
-		 // Open the shared preferences
-        mPrefs = getSharedPreferences("SharedPreferences",
-                Context.MODE_PRIVATE);
-        // Get a SharedPreferences editor
-        mEditor = mPrefs.edit();
-        /*
-         * Create a new location client, using the enclosing class to
-         * handle callbacks.
-         */
-        mLocationClient = new LocationClient(this, this, this);
-        // Start with updates turned off
-        mUpdatesRequested = false;
-        
 
 		startRun.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				
+				lastLocation = mLocationClient.getLastLocation();
 				setContentView(R.layout.screen2);
-				timeRan = SystemClock.uptimeMillis();
-				handler.postDelayed(updates, 0);
-				mLocationClient.connect();
+				writer(true);
+
 			}
 		});
+		// pauseRun.setOnClickListener(new OnClickListener() {
+		// public void onClick(View view) {
+		// if (pauseon) {
+		// chron.start();
+		// pauseon = false;
+		// } else {
+		// timeRan = chron.getBase() - SystemClock.elapsedRealtime();
+		// chron.stop();
+		// pauseon = true;
+		// }
+		// }
+		// });
 	}
 
-	// pauseRun.setOnClickListener(new OnClickListener(){
-	// public void onClick(View view){
-	// buffer+=timeRan;
-	// handler.removeCallbacks(updates);
-	// }
-	// });
+	private void writer(boolean bool) {
+		while (bool) {
+			PrintWriter out;
+			try {
+				out = new PrintWriter(new BufferedWriter(new FileWriter(
+						"../storage/emulated/0/Documents/log.txt", true)));
+				out.println("Overall Change in Distance: " + distance);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	// stopRun.setOnClickListener(new OnClickListener(){
 	// public void onClick(View view){
 	// try {
@@ -224,6 +247,39 @@ public class MainActivity extends FragmentActivity implements
 	// }
 	// });
 	// }
+	private static double distanceCalc(Location location) {
+		BigDecimal lastLat, lastLon, curLat, curLon;
+		lastLat = new BigDecimal(lastLocation.getLatitude());
+		lastLon = new BigDecimal(lastLocation.getLongitude());
+		curLat = new BigDecimal(location.getLatitude());
+		curLon = new BigDecimal(location.getLongitude());
+		lastLocation = location;
+		distance += calcDistance(lastLat, curLat, lastLon, curLon);
+
+		return distance;
+	}
+
+	/**
+	 * finds the distance between last and current point
+	 * 
+	 * @param lastLat
+	 *            lastLat
+	 * @param curLat
+	 *            curLat
+	 * @param lastLon
+	 *            lastLon
+	 * @param curLon
+	 *            curLon
+	 * @return
+	 */
+
+	private static double calcDistance(BigDecimal lastLat, BigDecimal curLat,
+			BigDecimal lastLon, BigDecimal curLon) {
+		BigDecimal diflong = (lastLon.subtract(curLon)).pow(2);
+		BigDecimal diflat = (lastLat.subtract(curLat)).pow(2);
+		diflong.add(diflat);
+		return Math.pow(diflong.doubleValue(), .5);
+	}
 
 	/**
 	 * Need to determine the entered pace, do this by changing all to milis per
@@ -380,21 +436,6 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	private Runnable updates = new Runnable() {
-		@Override
-		public void run() {
-			// timeRan = SystemClock.uptimeMillis() - startTime;
-			// current = buffer + timeRan;
-			// int secs = (int) (current / 1000);
-			// int mins = secs / 60;
-			// secs = secs % 60;
-			// int milis = (int) (current % 1000);
-			// int hours = (int) (mins / 60);
-			// tv.setText(hours + ": " + mins + ": " + secs + ". " + milis);
-		}
-
-	};
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -449,7 +490,6 @@ public class MainActivity extends FragmentActivity implements
 	public void onConnected(Bundle arg0) {
 		// Display the connection status
 		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-
 	}
 
 	@Override
